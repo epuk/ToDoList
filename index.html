@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="js/script.js">
+    <title>ToDoList</title>
+</head>
+<body>
+    <div id="myDIV" class="header">
+
+        <h2>СПИСОК ДЕЛ:</h2>
+
+
+        <ul id="myUL">
+            <li id="txt">Название задачи</li>
+            <li class="checked">Название задачи</li>
+
+        
+          </ul>
+
+
+          <input type="text" id="myInput" placeholder="Название...">
+          <span onclick="newElement()" class="addBtn">Добавить</span>
+  
+  
+      </div>
+      
+
+
+
+
+
+
+      <div class="note" data-id="id-1">
+        <div class="note__content">
+            <h2 class="note__title"> Text title </h2>
+            <p class="note__body"> Text body </p>
+        </div>
+        <button class="actions" data-actions="edit-note" id="start_edit"> edit </button>
+    </div>
+<script>
+    var myNodelist = document.getElementsByTagName("LI");
+    var i;
+    for (i = 0; i < myNodelist.length; i++) {
+      var span = document.createElement("SPAN");
+     var txt = document.createTextNode("🗑");
+      span.className = "close";
+     span.appendChild(txt);
+      myNodelist[i].appendChild(span);
+    }
+    
+    
+    
+    var close = document.getElementsByClassName("close");
+    var i;
+    for (i = 0; i < close.length; i++) {
+      close[i].onclick = function() {
+        var div = this.parentElement;
+        div.style.display = "none";
+      }
+    }
+    
+    
+    
+    var list = document.querySelector('ul');
+    list.addEventListener('click', function(ev) {
+      if (ev.target.tagName === 'LI') {
+        ev.target.classList.toggle('checked');
+     }
+    }, false);
+    
+    
+    var myNodelist = document.getElementsByTagName("LI");
+    var i;
+    for (i = 0; i < myNodelist.length; i++) {
+      var span = document.createElement("SPAN");
+     var txt = document.createTextNode("✏️");
+      span.className = "edit";
+     span.appendChild(txt);
+      myNodelist[i].appendChild(span);
+    }
+    
+    
+    
+    var edit = document.getElementsByClassName("edit", edit_text_body);
+    var i;
+    for (i = 0; i < close.length; i++) {
+      edit[i].onclick = function() {
+        let editable1 = document.getElementsByClassName('note__body');
+        let editable2 = '<input type="text" value="'+editable1[0].innerHTML+'"id="edit_current_text"/>';
+        editable1[0].innerHTML = '';
+        editable1[0].insertAdjacentHTML('afterBegin', editable2);
+        document.removeEventListener('edit', edit_text_body)
+      }
+    }
+    
+    
+    
+    
+    function newElement() {
+        var li = document.createElement("li");
+        var inputValue = document.getElementById("myInput").value;
+       var t = document.createTextNode(inputValue);
+        li.appendChild(t);
+        if (inputValue === '') {
+          alert("Вы должны что-то написать!");
+        } else {
+         document.getElementById("myUL").appendChild(li);
+        }
+       document.getElementById("myInput").value = "";
+      
+        var span = document.createElement("SPAN");
+        var txt = document.createTextNode("🗑");
+       span.className = "close";
+        span.appendChild(txt);
+        li.appendChild(span);
+      
+        for (i = 0; i < close.length; i++) {
+          close[i].onclick = function() {
+           var div = this.parentElement;
+            div.style.display = "none";
+          }
+        }
+      }
+    
+    
+    
+    
+    
+       
+    let start_edit = document.getElementById('start_edit');
+    start_edit.addEventListener('click', edit_text_body);
+     
+    function edit_text_body() {
+        let editable1 = document.getElementsByClassName('note__body');
+        let editable2 = '<input type="text" value="'+editable1[0].innerHTML+'"id="edit_current_text"/>';
+        editable1[0].innerHTML = '';
+        editable1[0].insertAdjacentHTML('afterBegin', editable2);
+        start_edit.removeEventListener('click', edit_text_body);
+        start_edit.addEventListener('dblclick', save_text_body);
+    }
+     
+    function save_text_body() {
+        let text1 = document.getElementById('edit_current_text');
+        let editable1 = document.getElementsByClassName('note__body');
+        editable1[0].innerHTML = text1.value;
+        start_edit.removeEventListener('dblclick', save_text_body);
+        start_edit.addEventListener('click', edit_text_body);
+    }
+</script>
+</body>
+</html>
